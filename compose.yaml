@@ -1,0 +1,19 @@
+services:
+  dockview:
+    build: .
+    image: dockview:local
+    container_name: dockview
+    restart: unless-stopped
+    environment:
+      API_TOKEN: ${API_TOKEN:?Create a .env file with API_TOKEN}
+    group_add:
+      - "${DOCKER_GID:?Run install.sh to detect the Docker socket group}"
+    ports:
+      - "${DOCKVIEW_PORT:-3000}:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp

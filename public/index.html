@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <title>Dockview</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <aside>
+    <div class="brand"><span class="logo">D</span><div><b>Dockview</b><small>Server Console</small></div></div>
+    <nav><button class="active">▦ <span>داشبورد</span></button><button disabled>⬡ <span>ایمیج‌ها</span></button><button disabled>◫ <span>والیوم‌ها</span></button><button disabled>⌘ <span>شبکه‌ها</span></button></nav>
+    <div class="connection"><i></i><span>Docker Engine</span><b id="connection">در حال اتصال</b></div>
+  </aside>
+  <main>
+    <header><div><p>مدیریت زیرساخت</p><h1>نمای کلی سرور</h1></div><div class="header-actions"><span id="updated">—</span><button id="refresh" title="بروزرسانی">↻</button></div></header>
+    <section id="error" class="error hidden"></section>
+    <section class="engine card skeleton" id="engine"><div><span class="server-icon">⌁</span><div><small>میزبان داکر</small><h2>در حال بارگذاری…</h2></div></div></section>
+    <section class="metrics" id="metrics"></section>
+    <section class="containers card">
+      <div class="section-title"><div><h2>کانتینرها</h2><p>مصرف منابع به‌صورت زنده</p></div><div class="filter"><input id="search" placeholder="جستجوی نام یا ایمیج…"><select id="state"><option value="all">همه وضعیت‌ها</option><option value="running">در حال اجرا</option><option value="exited">متوقف</option></select></div></div>
+      <div class="table-wrap"><table><thead><tr><th>نام</th><th>وضعیت</th><th>CPU</th><th>حافظه</th><th>شبکه</th><th>پورت‌ها</th><th></th></tr></thead><tbody id="rows"><tr><td colspan="7" class="empty">در حال دریافت اطلاعات…</td></tr></tbody></table></div>
+    </section>
+  </main>
+  <dialog id="detail"><button class="close" aria-label="بستن">×</button><div id="detail-body"></div></dialog>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,52 +1,70 @@
 # Dockview
 
-یک داشبورد سبک و واکنش‌گرا برای مشاهده و مدیریت Docker Engine روی سرور. Dockview بدون دیتابیس و بدون وابستگی npm اجرا می‌شود و اطلاعات را مستقیماً از Docker API می‌خواند.
+A focused, lightweight Docker server dashboard with live container metrics and essential runtime controls. Dockview has no database and no runtime npm dependencies—it talks directly to the Docker Engine API and serves a responsive web console from a single container.
 
-## امکانات نسخه MVP
+## Features
 
-- نمایش کانتینرهای فعال و متوقف، ایمیج، وضعیت و پورت‌ها
-- نمایش زنده CPU، RAM و ترافیک شبکه هر کانتینر (هر ۵ ثانیه)
-- اطلاعات Docker Engine، سیستم‌عامل، CPU و RAM میزبان
-- جزئیات کانتینر شامل IP، mountها، labelها و restart policy
-- اجرای start، stop و restart با تأیید کاربر
-- جستجو و فیلتر وضعیت، رابط فارسی و موبایل‌پسند
-- محافظت API با کلید دسترسی
+- Live CPU, memory, and network I/O metrics with five-second refreshes
+- Running and stopped container inventory with images, ports, and status
+- Host overview with Docker version, operating system, CPU, and memory
+- Container details including IP address, mounts, labels, and restart policy
+- Start, stop, and restart controls with operator confirmation
+- Search and state filtering
+- Responsive dark UI with dedicated metric typography
+- API-key protection and a browser-local authentication flow
+- Zero runtime package dependencies
 
-## نصب روی سرور لینوکس
+## Install on a Linux server
 
-پیش‌نیاز: Docker Engine به همراه Docker Compose plugin.
+Docker Engine and the Docker Compose plugin are required.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/dockview.git
+git clone https://github.com/Amir-Ali-Dev/dockview.git
 cd dockview
 chmod +x install.sh
 ./install.sh
 ```
 
-سپس `http://SERVER_IP:3000` را باز و کلیدی را که نصب‌کننده چاپ می‌کند وارد کنید. نصب‌کننده شناسه گروه Docker Socket را نیز خودکار ثبت می‌کند تا برنامه با کاربر غیر root اجرا شود. برای تغییر پورت، مقدار `DOCKVIEW_PORT` را در `.env` عوض کرده و `docker compose up -d` اجرا کنید.
+Open `http://SERVER_IP:3000` and enter the API key printed by the installer. The installer also detects the Docker socket group automatically, allowing Dockview to run as a non-root container user.
 
-## اجرای توسعه
+To change the public port, edit `DOCKVIEW_PORT` in `.env`, then apply it:
 
-روی لینوکس یا WSL که Docker Socket در مسیر استاندارد قرار دارد:
+```bash
+docker compose up -d
+```
+
+## Development
+
+On Linux or WSL with the Docker socket in its standard location:
 
 ```bash
 npm start
 ```
 
-متغیرهای قابل تنظیم: `PORT`، `DOCKER_SOCKET` و `API_TOKEN`.
+Supported environment variables:
 
-## نکته امنیتی مهم
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `PORT` | `3000` | Internal HTTP listen port |
+| `DOCKER_SOCKET` | `/var/run/docker.sock` | Docker Engine socket path |
+| `API_TOKEN` | Empty | API access key; required by Compose |
+| `DOCKVIEW_PORT` | `3000` | Published host port in Compose |
+| `DOCKER_GID` | Detected | Host Docker socket group ID |
 
-دسترسی به `/var/run/docker.sock` عملاً سطح دسترسی مدیریتی روی Docker Host ایجاد می‌کند. Dockview را مستقیماً روی اینترنت عمومی منتشر نکنید. آن را پشت HTTPS و VPN یا reverse proxy دارای احراز هویت قرار دهید، فایروال را محدود کنید و یک `API_TOKEN` قوی نگه دارید. در محیط جدی‌تر می‌توان از socket proxy با دسترسی محدود استفاده کرد.
+## Security
 
-## نقشه راه
+Access to `/var/run/docker.sock` effectively grants administrative control over the Docker host. Do not expose Dockview directly to the public internet. Use HTTPS, a VPN, or an authenticated reverse proxy, restrict access with a firewall, and keep a strong `API_TOKEN`.
 
-- صفحه‌های کامل Images، Volumes و Networks
-- log viewer و terminal اختیاری
-- نمودار تاریخچه منابع و هشدارها
-- پشتیبانی چند سرور با Agent جداگانه
-- کاربران، نقش‌ها و ورود با OIDC
+For hardened deployments, place a Docker socket proxy with an explicit endpoint allowlist between Dockview and the Docker daemon.
 
-## مجوز
+## Roadmap
 
-MIT
+- Full Images, Volumes, and Networks views
+- Container logs and an optional terminal
+- Resource history and alerting
+- Multi-host management with a dedicated agent
+- Users, roles, and OIDC authentication
+
+## License
+
+[MIT](LICENSE)
